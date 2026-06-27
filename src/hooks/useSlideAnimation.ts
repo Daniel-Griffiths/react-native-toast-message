@@ -29,7 +29,8 @@ export function translateYOutputRangeFor({
   const keyboardAwareOffset =
     position === 'bottom' && avoidKeyboard ? keyboardHeight + keyboardOffset : 0;
 
-  const range = [-(height * 2), Math.max(offset, keyboardAwareOffset)];
+  const hiddenDistance = Math.max(height * 2, 200);
+  const range = [-hiddenDistance, Math.max(offset, keyboardAwareOffset)];
   const outputRange =
     position === 'bottom' ? additiveInverseArray(range) : range;
 
@@ -73,16 +74,10 @@ export function useSlideAnimation({
     })
   }), [position, height, topOffset, bottomOffset, keyboardHeight, keyboardOffset, avoidKeyboard]);
 
-  const opacity = animatedValue.current.interpolate({
-    inputRange: [0, 0.7, 1],
-    outputRange: [0, 1, 1]
-  });
-
   return {
     animatedValue,
     animate,
     animationStyles: {
-      opacity,
       transform: [
         {
           translateY
